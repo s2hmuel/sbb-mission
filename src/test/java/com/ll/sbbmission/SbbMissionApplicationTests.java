@@ -154,7 +154,7 @@ class SbbMissionApplicationTests {
     void testDeleteData() {
         for (int i = 3; i <= 302; i++) {
             int id = i;
-            this.questionService.delete(id);
+            this.questionService.delete(null);
         }
     }
 
