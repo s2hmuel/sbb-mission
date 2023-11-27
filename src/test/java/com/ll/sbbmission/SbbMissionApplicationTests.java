@@ -4,11 +4,15 @@ import com.ll.sbbmission.answer.entity.Answer;
 import com.ll.sbbmission.answer.repository.AnswerRepository;
 import com.ll.sbbmission.question.entity.Question;
 import com.ll.sbbmission.question.repository.QuestionRepository;
+import com.ll.sbbmission.question.service.QuestionService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +28,9 @@ class SbbMissionApplicationTests {
     private QuestionRepository questionRepository;
     @Autowired
     private AnswerRepository answerRepository;
+    @Autowired
+    private QuestionService questionService;
+
     @Test
     void testJpa() {
         Question q1 = new Question();
@@ -132,6 +139,21 @@ class SbbMissionApplicationTests {
         assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
     }
 
+    @Test
+    void testData() {
+        for (int i = 1; i <= 300; i++) {
+            String subject = String.format("테스트 데이터입니다:[%03d]", i);
+            String content = "내용무";
+            this.questionService.create(subject, content);
+        }
+    }
 
+    @Test
+    void testDeleteData() {
+        for (int i = 3; i <= 302; i++) {
+            int id = i;
+            this.questionService.delete(id);
+        }
+    }
 
 }
