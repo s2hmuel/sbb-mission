@@ -8,6 +8,8 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -24,6 +26,8 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+
+
 
     @Test
     public void testCreateUser() {
@@ -42,5 +46,22 @@ public class UserServiceTest {
         assertNotNull(createdUser);
         verify(userRepository).save(any(SiteUser.class));
         verify(passwordEncoder).encode(password);
+    }
+
+    @Test
+    void TestGetUser() {
+        // Arrange
+        String username = "testUser";
+        SiteUser siteUser = new SiteUser();
+        siteUser.setUsername(username);
+
+        when(userRepository.findByusername(username)).thenReturn(Optional.of(siteUser));
+
+        // Act
+        SiteUser result = userService.getUser(username);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(username, result.getUsername());
     }
 }

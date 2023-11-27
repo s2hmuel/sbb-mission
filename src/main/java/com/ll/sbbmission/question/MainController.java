@@ -1,4 +1,4 @@
-package com.ll.sbbmission;
+package com.ll.sbbmission.question;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

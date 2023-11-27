@@ -1,16 +1,14 @@
 package com.ll.sbbmission.question.service;
 
-import com.ll.sbbmission.exception.DataNotFoundException;
+import com.ll.sbbmission.global.exception.DataNotFoundException;
 import com.ll.sbbmission.question.entity.Question;
 import com.ll.sbbmission.question.repository.QuestionRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,16 +1,15 @@
 package com.ll.sbbmission.question.service;
 
-import com.ll.sbbmission.exception.DataNotFoundException;
+import com.ll.sbbmission.global.exception.DataNotFoundException;
 import com.ll.sbbmission.question.entity.Question;
 import com.ll.sbbmission.question.repository.QuestionRepository;
+import com.ll.sbbmission.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,11 +33,12 @@ public class QuestionService {
             throw new DataNotFoundException("question not found");
         }
     }
-    public void create(String subject, String content) {
+    public void create(String subject, String content, SiteUser user) {
         Question q = new Question();
         q.setSubject(subject);
         q.setContent(content);
         q.setCreateDate(LocalDateTime.now());
+        q.setAuthor(user);
         this.questionRepository.save(q);
     }
 
