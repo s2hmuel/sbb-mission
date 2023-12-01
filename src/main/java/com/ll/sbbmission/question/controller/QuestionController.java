@@ -1,6 +1,8 @@
 package com.ll.sbbmission.question.controller;
 
+import com.ll.sbbmission.answer.entity.Answer;
 import com.ll.sbbmission.answer.entity.AnswerForm;
+import com.ll.sbbmission.answer.service.AnswerService;
 import com.ll.sbbmission.question.entity.Question;
 import com.ll.sbbmission.question.entity.QuestionForm;
 import com.ll.sbbmission.question.service.QuestionService;
@@ -27,6 +29,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final UserService userService;
+    private final AnswerService answerService;
 
     @GetMapping("/list")
     public String list(Model model,  @RequestParam(value="page", defaultValue="0") int page,  @RequestParam(value = "kw", defaultValue = "") String kw) {
@@ -37,8 +40,12 @@ public class QuestionController {
     }
 
     @GetMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm,  @RequestParam(value = "page", defaultValue = "0") int page )
+    {
         Question question = questionService.getQuestion(id);
+        model.addAttribute("question", question);
+        Page<Answer> answerPaging = this.answerService.getList(question, page);
+        model.addAttribute("answerPaging", answerPaging);
         model.addAttribute("question", question);
         return "question_detail";
     }

@@ -2,6 +2,7 @@ package com.ll.sbbmission;
 
 import com.ll.sbbmission.answer.entity.Answer;
 import com.ll.sbbmission.answer.repository.AnswerRepository;
+import com.ll.sbbmission.answer.service.AnswerService;
 import com.ll.sbbmission.question.entity.Question;
 import com.ll.sbbmission.question.repository.QuestionRepository;
 import com.ll.sbbmission.question.service.QuestionService;
@@ -15,11 +16,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
@@ -31,6 +35,8 @@ class SbbMissionApplicationTests {
     private AnswerRepository answerRepository;
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private AnswerService answerService;
 
 
     @Test
@@ -60,7 +66,7 @@ class SbbMissionApplicationTests {
     @Test
     void testFindById() {
         Optional<Question> oq = this.questionRepository.findById(1);
-        if(oq.isPresent()) {
+        if (oq.isPresent()) {
             Question q = oq.get();
             assertEquals("sbb가 무엇인가요?", q.getSubject());
         }
@@ -74,7 +80,7 @@ class SbbMissionApplicationTests {
 
 
     @Test
-    void testFindBySubjectAndContent(){
+    void testFindBySubjectAndContent() {
         Question q = this.questionRepository.findBySubjectAndContent("sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
         assertEquals(1, q.getId());
     }
@@ -158,4 +164,12 @@ class SbbMissionApplicationTests {
         }
     }
 
+    @Test
+    void testAnswerPaging() {
+        Question question = questionService.getQuestion(304);
+        for (int i = 1; i <= 100; i++) {
+            String content = String.format("테스트 데이터입니다:[%03d]", i);
+            this.answerService.create(question, content, null);
+        }
+    }
 }
